@@ -65,17 +65,25 @@ Effect: Current defense is added to attack and defense is reduced to 0 for 3 tur
 
 
 All classes
+
 -All classes now have a damage range of 0.8 - 1.2 * normal damage value
 
 
 Assassin
+
 -Assassin backstab now does 1 * attack damage
 
+
 Warrior
+
 -Warrior roar bug fixed
+
 -Pommel strike can now stun from 1-2 turns
+
 -Wild swing damage range changed to 0.6 - 1.5
 
+
 Healer
+
 -healing hand buffed from 4 health for 4 turns to 5 health for 5 turns (total 16 -> 20)
 
