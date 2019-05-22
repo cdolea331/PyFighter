@@ -1,6 +1,6 @@
-from effect import effect
+from effect import Effect
 
-class stunned(effect):
+class stunned(Effect):
 
     def __init__(self, sourcePlayer, targetPlayer, duration):
         self.sourcePlayer = sourcePlayer
@@ -16,35 +16,35 @@ class stunned(effect):
         self.targetPlayer.stunned = False
 
 
-class poisoned(effect):
+class poisoned(Effect):
 
     def __init__(self, sourcePlayer, targetPlayer, duration, damage):
         self.sourcePlayer = sourcePlayer
         self.targetPlayer = targetPlayer
         self.duration = duration
-        self.damage = damage
+        self.amount = damage
         self.message = targetPlayer.className + " " + targetPlayer.name + " has been poisoned!"
 
     def apply(self):
-        self.targetPlayer.health = self.targetPlayer.health - self.damage
-        print(self.targetPlayer.className + " " + self.targetPlayer.name + " took " + str(self.damage) + " poison damage!")
+        self.targetPlayer.health = self.targetPlayer.health - self.amount
+        print(self.targetPlayer.className + " " + self.targetPlayer.name + " took " + str(self.amount) + " poison damage!")
 
-class healOverTime(effect):
+class healOverTime(Effect):
 
     def __init__(self, sourcePlayer, targetPlayer, duration, damage):
         self.sourcePlayer = sourcePlayer
         self.targetPlayer = targetPlayer
         self.duration = duration
-        self.damage = damage
+        self.amount = damage
         self.message = targetPlayer.className + " " + targetPlayer.name + " started healing!"
 
     def apply(self):
-        self.targetPlayer.health = min(self.targetPlayer.health + self.damage, self.targetPlayer.maxHealth)
+        self.targetPlayer.health = min(self.targetPlayer.health + self.amount, self.targetPlayer.maxHealth)
         print(self.targetPlayer.className + " " + self.targetPlayer.name + " healed for " + str(
-            self.damage) + " health!")
+            self.amount) + " health!")
 
 
-class weaken(effect):
+class weaken(Effect):
 
     def __init__(self, sourcePlayer, targetPlayer, duration, amount):
         self.sourcePlayer = sourcePlayer
@@ -57,13 +57,13 @@ class weaken(effect):
     def apply(self):
         if not self.applied:
             self.applied = True
-            self.targetPlayer.attack = self.originalAttack - self.amount
+            self.targetPlayer.attack = self.targetPlayer.attack - self.amount
 
     def remove(self):
-        self.targetPlayer.attack = self.originalAttack
+        self.targetPlayer.attack = self.targetPlayer.attack + self.amount
 
 
-class strengthen(effect):
+class strengthen(Effect):
 
     def __init__(self, sourcePlayer, targetPlayer, duration, amount):
         self.sourcePlayer = sourcePlayer
@@ -77,14 +77,13 @@ class strengthen(effect):
 
         if not self.applied:
             self.applied = True
-            self.targetPlayer.attack = self.originalAttack + self.amount
+            self.targetPlayer.attack = self.targetPlayer.attack + self.amount
 
     def remove(self):
         self.targetPlayer.attack = self.targetPlayer.attack - self.amount
-        print(self.targetPlayer.attack)
 
 
-class harden(effect):
+class harden(Effect):
 
     def __init__(self, sourcePlayer, targetPlayer, duration, amount):
         self.sourcePlayer = sourcePlayer
@@ -97,12 +96,12 @@ class harden(effect):
     def apply(self):
         if not self.applied:
             self.applied = True
-            self.targetPlayer.defense = self.originalDefense + self.amount
+            self.targetPlayer.defense = self.targetPlayer.defense + self.amount
 
     def remove(self):
-        self.targetPlayer.defense = self.originalDefense
+        self.targetPlayer.defense = self.targetPlayer.defense - self.amount
 
-class soften(effect):
+class soften(Effect):
 
     def __init__(self, sourcePlayer, targetPlayer, duration, amount):
         self.sourcePlayer = sourcePlayer
@@ -115,10 +114,10 @@ class soften(effect):
     def apply(self):
         if not self.applied:
             self.applied = True
-            self.targetPlayer.defense = self.originalDefense - self.amount
+            self.targetPlayer.defense = self.targetPlayer.defense - self.amount
 
     def remove(self):
-        self.targetPlayer.defense = self.originalDefense
+        self.targetPlayer.defense = self.targetPlayer.defense + self.amount
 
 
 

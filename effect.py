@@ -1,5 +1,4 @@
-import fighter
-class effect:
+class Effect:
 
     applied = False
     def __init__(self, sourcePlayer, targetPlayer, duration, message):
