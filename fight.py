@@ -115,38 +115,86 @@ def showStats(fighter1, fighter2):
 # fight(combatant1, combatant2)
 # warFighter.health -= 50
 def combatant1AI(self, opponent):
-    choice = random.randint(0,3)
+    # choice = random.randint(0,3)
+    # if not self.defense <= 10 and choice == 3:
+    #     return self.attack4(self)
+    # return random.choice([self.attack1(self), self.attack2(self), self.attack3(self)])
+    return random.choice([self.attack1(self), self.attack2(self), self.attack3(self), self.attack4(self)])
+
+def combatant2AI(self, opponent):
+    choice = random.randint(0, 3)
     if not self.defense <= 10 and choice == 3:
         return self.attack4(self)
     return random.choice([self.attack1(self), self.attack2(self), self.attack3(self)])
+    # return random.choice([self.attack1(self), self.attack2(self), self.attack3(self), self.attack4(self)])
 
-def combatant2AI(self, opponent):
-    return random.choice([self.attack1(self), self.attack2(self), self.attack3(self), self.attack4(self)])
+def makeHealer():
+    return Healer(name="boi", decideMove=combatant1AI)
+
+def makeWarrior():
+    return Warrior(name="boi", decideMove=combatant1AI)
+
+def makeJugger():
+    return Juggernaut(name="boi", decideMove=combatant2AI)
+
+def makeAssassin():
+    return Assassin(name="boi", decideMove=combatant1AI)
+
+def testBalance():
+    fighters = [makeHealer, makeAssassin, makeWarrior, makeJugger]
+    records = []
+    for fighter in fighters:
+        for opponent in fighters:
+            if not fighter == opponent:
+                amount = 0
+                p1Wins = 0
+                p2Wins = 0
+                for i in range(2000):
+                    f = fighter()
+                    o = opponent()
+                    results = fight(f, o)
+                    amount += results[0]
+                    if results[1] == 1:
+                        p1Wins += 1
+                    else:
+                        p2Wins += 1
+                    while len(f.effects) > 0 and len(o.effects) > 0:
+                        f.tickEffects()
+                        o.tickEffects()
+                records.append((f.className, o.className, p1Wins, p2Wins))
+
+    for record in records:
+        print(record[0] + " vs " + record[1] + " :" + str(float(record[2])/2000.0))
 
 
 
-amount = 0
-p1Wins = 0
-p2Wins = 0
-for i in range(1000):
-    combatant1 = Juggernaut(name="Alan", decideMove = combatant1AI)
-    combatant2 = Warrior(name="Adrian", decideMove = combatant2AI)
-    results = fight(combatant1, combatant2)
-    amount += results[0]
-    if results[1] == 1:
-        p1Wins += 1
-    else:
-        p2Wins += 1
-    while len(combatant1.effects) > 0 and len(combatant2.effects) > 0:
-        combatant1.tickEffects()
-        combatant2.tickEffects()
-    # for e in Juggernaut.effects:
-    #     print(str(e))
+testBalance()
+
+# amount = 0
+# p1Wins = 0
+# p2Wins = 0
+# for i in range(1000):
+#     combatant1 = Healer(name="Alan", decideMove = combatant1AI)
+#     combatant2 = Warrior(name="Adrian", decideMove = combatant2AI)
+#     results = fight(combatant1, combatant2)
+#     amount += results[0]
+#     if results[1] == 1:
+#         p1Wins += 1
+#     else:
+#         p2Wins += 1
+#     while len(combatant1.effects) > 0 and len(combatant2.effects) > 0:
+#         combatant1.tickEffects()
+#         combatant2.tickEffects()
+#     # for e in Juggernaut.effects:
+#     #     print(str(e))
+#
+#
+#
+# print(amount/1000)
+# print(combatant1.className +  " " + combatant1.name + ": " + str(p1Wins) + "  " +
+#       combatant2.className + " " + combatant2.name + ": " + str(p2Wins))
 
 
-
-print(amount/1000)
-print("J Alan: " + str(p1Wins) + " W Adrian: " + str(p2Wins))
 
 #
 # print(myFighter.attack)

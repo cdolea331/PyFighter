@@ -6,7 +6,7 @@ class Warrior(fighter):
     className = "Warrior"
     effects = []
 
-    def __init__(self, health=126.0, attack=15.0, defense=2.0, speed=1.5, name="Boi", decideMove = None):
+    def __init__(self, health=126.0, attack=15.0, defense=4.0, speed=1.5, name="Boi", decideMove = None):
         self.maxHealth = health
         self.health = health
         self.attack = attack
@@ -21,7 +21,7 @@ class Warrior(fighter):
 
         def __init__(self, fighter):
             self.fighter = fighter
-            self.damage = fighter.attack * (random.randint(6, 15)/10.0)
+            self.damage = fighter.attack * (random.randint(6, 16)/10.0)
 
         def effect(self, fighter, opponent):
             appliedDamage = max(self.damage - opponent.defense, 0.5)
@@ -34,7 +34,7 @@ class Warrior(fighter):
     class attack2:
         def __init__(self, fighter):
             self.fighter = fighter
-            self.amount = 5
+            self.amount = 6
             self.duration = 4
 
         def effect(self, fighter, opponent):
@@ -47,7 +47,7 @@ class Warrior(fighter):
     class attack3:
         def __init__(self, fighter):
             self.fighter = fighter
-            self.damage = fighter.attack * 0.65 * (random.randint(8, 12)/10)
+            self.damage = fighter.attack * 0.80 * (random.randint(8, 12)/10)
 
         def effect(self, fighter, opponent):
             appliedDamage = max(self.damage, 0.5)
@@ -60,10 +60,10 @@ class Warrior(fighter):
     class attack4:
         def __init__(self, fighter):
             self.fighter = fighter
-            self.damage = fighter.attack * 0.65 * (random.randint(8, 12)/10)
+            self.damage = fighter.attack * 0.55 * (random.randint(8, 12)/10)
             self.stunChance = 35
             self.stunDuration = 1
-            self.stunDurationRange = 1
+            self.stunDurationRange = 0
 
         def effect(self, fighter, opponent):
             appliedDamage = max(self.damage - opponent.defense, 0.5)
@@ -114,8 +114,8 @@ class Healer(fighter):
 
         def __init__(self, fighter):
             self.fighter = fighter
-            self.amount = 5
-            self.duration = 4
+            self.amount = 5.5
+            self.duration = 6
 
         def effect(self, fighter, opponent):
             fighter.effects.append(healOverTime(fighter, fighter, self.duration, self.amount ))
@@ -127,16 +127,24 @@ class Healer(fighter):
 
         def __init__(self, fighter):
             self.fighter = fighter
-            self.damage = fighter.attack  * (random.randint(8, 12)/10)
-            self.amount = 5.75
-            self.duration = 5
+            self.damage = fighter.attack * 0.3 * (random.randint(8, 12)/10)
+            self.names = ["Assassin", "Warrior", "Healer", "Juggernaut"]
+            self.defaultDefense = [0, 2, 3, 8]
+            self.defaultAttack = [20, 15, 10, 5]
 
         def effect(self, fighter, opponent):
-            appliedDamage = max(self.damage, 0.5)
-            fighter.health -= appliedDamage
-            fighter.effects.append(healOverTime(fighter,fighter,self.duration, self.amount))
-            print(fighter.className + " " + fighter.name + " purifies themselves, causing " + str(appliedDamage) +
-                  " damage and beginning to heal!")
+            eff = opponent.effects
+            appliedDamage = self.damage * len(eff)
+            opponent.effects = []
+            for i in range(len(self.names)):
+                if opponent.className == self.names[i]:
+                    opponent.defense = self.defaultDefense[i]
+                    opponent.attack = self.defaultAttack[i]
+            fighter.health -= 5 - 0.5 * appliedDamage
+            opponent.health -= appliedDamage
+            print(fighter.className + " " + fighter.name + " purifies " + opponent.className + " " +
+                  opponent.name + ", causing 5 damage to themself and dealing " + str(appliedDamage)
+                  + " damage, removing all effects!")
             return fighter, opponent
 
     # Test of Faith
@@ -211,7 +219,7 @@ class Assassin(fighter):
             self.duration = 3
             self.stunChance = 50
             self.stunDuration = 1
-            self.revealChance = 10
+            self.revealChance = 20
 
         def effect(self, fighter, opponent):
             fighter.effects.append(harden(fighter,fighter,self.duration,self.amount))
@@ -226,13 +234,17 @@ class Assassin(fighter):
     class attack3:
         def __init__(self, fighter):
             self.fighter = fighter
-            self.damage = fighter.attack * 0.85  * (random.randint(8, 12)/10)
-            self.revealChance = 20
+            self.damage = fighter.attack * 0.95  * (random.randint(8, 12)/10)
+            self.revealChance = 25
+            self.amount = 3
+            self.duration = 3
 
         def effect(self, fighter, opponent):
             opponent.health -= max(self.damage, 0.5)
+            opponent.effects.append(soften(fighter,opponent, self.duration, self.amount))
             print(fighter.className + " " + fighter.name + " strikes " + opponent.className + " " +
-                  opponent.name + " in the back for " + str(self.damage) + " damage!")
+                  opponent.name + " in the back for " + str(self.damage) + " damage and lowering their defense by " +
+                  str(self.amount) + "!")
             fighter.sharpenBlade(self.revealChance)
             return fighter, opponent
 
@@ -240,7 +252,7 @@ class Assassin(fighter):
     class attack4:
         def __init__(self, fighter):
             self.fighter = fighter
-            self.damage = fighter.attack * 0.85  * (random.randint(8, 12)/10)
+            self.damage = fighter.attack * 0.55  * (random.randint(8, 12)/10)
             self.duration = 4
             self.poisonDamage = 3
             self.revealChance = 15
@@ -248,10 +260,15 @@ class Assassin(fighter):
         def effect(self, fighter, opponent):
             appliedDamage = max(self.damage - opponent.defense, 0.5)
             opponent.health -= max(appliedDamage, 0.5)
+            eff = opponent.effects
+            multiplier = 1.5
+            for effect in eff:
+                if isinstance(effect, healOverTime):
+                    multiplier += 0.75
             print(fighter.className + " " + fighter.name + " strikes " + opponent.className + " " +
                   opponent.name + " with a poisoned blade, damaging them for " + str(self.damage) + " damage!")
-            if random.randint(0,100) < 55:
-                opponent.effects.append(poisoned(fighter,opponent,self.duration, self.poisonDamage))
+            if random.randint(0,100) < 75:
+                opponent.effects.append(poisoned(fighter,opponent,self.duration, self.poisonDamage * multiplier))
                 print(opponent.className + " " + opponent.name + " was poisoned!")
             fighter.sharpenBlade(self.revealChance)
             return fighter, opponent
@@ -281,7 +298,7 @@ class Juggernaut(fighter):
 
         def __init__(self, fighter):
             self.fighter = fighter
-            self.damage = fighter.attack + (fighter.defense * 0.25) * (random.randint(8, 12)/10)
+            self.damage = fighter.attack + (fighter.defense * 0.40) * (random.randint(8, 12)/10)
             self.stunChance = 25
             self.stunDuration = 1
 
@@ -301,7 +318,7 @@ class Juggernaut(fighter):
             self.fighter = fighter
             self.amount = 5
             self.duration = 4
-            self.extraChance = 20
+            self.extraChance = 35
             self.extraAmount = 5
 
         def effect(self, fighter, opponent):
@@ -330,7 +347,6 @@ class Juggernaut(fighter):
                 self.amount = 4
             appliedDamage = max(self.damage - opponent.defense, 0.5)
             opponent.health -= appliedDamage
-            reduction = opponent.attack * 0.20
             opponent.effects.append(weaken(fighter,opponent,self.duration, self.amount))
             print(fighter.className + " " + fighter.name + " pummels " + opponent.className + " " +
                   opponent.name + " for " + str(appliedDamage) + " damage and reduces their attack by " +
@@ -346,7 +362,7 @@ class Juggernaut(fighter):
 
         def __init__(self, fighter):
             self.fighter = fighter
-            self.damage = fighter.defense * 0.75 * (random.randint(8, 12)/10)
+            self.damage = fighter.defense * 0.85 * (random.randint(8, 12)/10)
             self.duration = 3
             self.lastTurn = 0
             self.rageDamage = fighter.attack * 1.15 * (random.randint(8, 12)/10)
