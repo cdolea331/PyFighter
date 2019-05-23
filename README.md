@@ -19,12 +19,58 @@ Secifications:
 You may not change any of your or your opponent's fields (variables/attributes), methods or other charactaristics. Yourcode should only looks at these variables to return an instance of the class who's attack you wish to use.
 
 
-Upcoming Changes:
--Healer purify will be reworked:
+Update 1.2:
 
-Purify
--Sacrifice 10 hp, remove all effects from enemy and deal 3 * the number of effects removed in damage.
+Warrior
 
+-Defense buffed from 2.0 -> 4.0
+
+-Wild swing range buffed from 0.6-1.5 -> 0.6-1.6
+
+-Battle roar amount buffed from 5 ->6 attack
+
+-Piercing strike damage buffed from 65% -> 80*
+
+-Pommel strike damage nerfed from 65% -> 55%
+
+------------------------------------------------------------------------
+
+Healher
+
+-healing hand buffed from 5 hp for 4 turns -> 5.5 hp for 6 turns
+
+-Purify reworked: now removes all effects from enemy and deals 30% of attack for each effect remove (ignores armor). Healer takes 5 - (0.5 * effects removed) damage.
+
+------------------------------------------------------------------------
+
+Assassin
+
+-Smoke bomb sharpen blade chance buffed from 10% -> 20%
+
+-backstab damage buffed from 85% -> 95%
+
+-backstab sharpen blade chance buffed from 20% -> 25%
+
+-backstab now lowers opponent's defense by 3 for 3 turns
+
+-poison blade damage nerfed from 85% -> 55%
+
+-poison blade poison chance buffed from 55% -> 75%
+
+-poison blade damage buffed to from 3 -> 4.5 + (2.25 * number of healing effects) 
+
+------------------------------------------------------------------------
+
+Juggernaut
+
+-Shield bash damage buffed from attack + 25% of defense -> attack + 40% of defense
+
+-Bulwark extra defense chance buffed from 20% -> 35%
+
+-The fury activation damage buffed from 75% defense -> 85% defense
+
+
++++++++++++++++++++++++++++
 
 v1.1:
 
