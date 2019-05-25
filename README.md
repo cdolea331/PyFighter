@@ -35,7 +35,7 @@ Warrior
 
 ------------------------------------------------------------------------
 
-Healher
+Healer
 
 -healing hand buffed from 5 hp for 4 turns -> 5.5 hp for 6 turns
 
