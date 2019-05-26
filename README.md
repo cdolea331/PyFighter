@@ -14,9 +14,9 @@ It is highly recommended you develop more than 1 AI, both because changes may be
 
 Changes/Patch notes will be update here
 
-Secifications: 
+Specifications: 
 
-You may not change any of your or your opponent's fields (variables/attributes), methods or other charactaristics. Yourcode should only looks at these variables to return an instance of the class who's attack you wish to use. You may not alter the seed used by the random library.
+You may not change any of your or your opponent's fields (variables/attributes), methods or other characteristics. Your code should only looks at these variables to return an instance of the class who's attack you wish to use. You may not alter the seed used by the random library.
 
 
 Update 1.2:
@@ -95,7 +95,7 @@ Attack 3: Bone Breaker
 
 Damage: 1 * attack
 
-Effect: Lower enemy attack by 2/3/4 if the opponent has 0-10/11-19/20+ attack
+Effect: Lower enemy attack by 2/3/4 if the opponent has 0-10/11-19/20+ attack for 4 turns 
 
 
 
